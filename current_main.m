@@ -1,18 +1,18 @@
-%% 现有机制
+%% Main execution script
 if ~ exist('Signals')
     clc;clear;
-    read_data;% 读取PJM历史调频信号RegD数据
+    read_data;  % Read PJM historical frequency signal RegD data
 end
 if ~ exist('Distribution')
-    handle_raw_data;% 处理数据，统计历史分布
+    handle_raw_data;  % Process data and calculate historical distribution
 end
 
-% 构造调频投标
+% Frequency regulation bidding
 current_bid;
 
-% 调频市场出清
+% Frequency market clearing
 current_clear;
 
-% 画出中标结果
+% Plot clearing results
 plot_clear;
 

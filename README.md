@@ -2,14 +2,24 @@
 
 This project implements a market clearing and resource allocation system for frequency regulation services in power systems. It includes optimization models for market clearing and resource allocation, with support for various types of resources including renewable energy, energy storage, and electric vehicles.
 
+Citation: H. Zhou, Q. Shao, X. Zhu, S. Liu, X. Liu and R. Lyu, "An Incentive-Compatible Frequency Regulation Market for Flexible Resources in Microgrid," in IEEE Access, vol. 11, pp. 18983-18994, 2023, doi: 10.1109/ACCESS.2023.3248219.
+
 ## Project Structure
 
 The main components of the system are:
 
+### New Mechanism
 - `new_main.m`: Main script that orchestrates the market clearing and resource allocation process
 - `new_clear.m`: Implements the market clearing optimization model
 - `new_allocate.m`: Handles resource allocation optimization
 - `new_bid.m`: Manages bidding strategies and cost calculations
+- `calculate_cost.m`: Calculates costs for the new mechanism
+
+### Current Mechanism (for comparison)
+- `current_main.m`: Main script for the current market mechanism
+- `current_clear.m`: Market clearing optimization for the current mechanism
+- `current_bid.m`: Bidding strategies for the current mechanism
+- `calculate_cost_current.m`: Cost calculation for the current mechanism
 
 ## Resource Types
 
@@ -40,6 +50,12 @@ The system supports five types of resources:
 - Handles different charging/discharging modes for energy storage
 - Supports customizable ratios for different resource types
 
+### Cost Calculation
+- Detailed cost breakdown by resource type
+- Separate tracking of degradation costs for storage systems
+- Hourly and time-step (2-second) cost calculations
+- Support for both absolute and relative cost metrics
+
 ## Mathematical Models
 
 ### Market Clearing Model
@@ -61,7 +77,7 @@ The system supports five types of resources:
 ## Usage
 
 1. Ensure MATLAB and Gurobi solver are installed
-2. Run `new_main.m` to start the market clearing and allocation process
+2. Run either `new_main.m` or `current_main.m` to start the market clearing and allocation process
 3. The system will:
    - Clear the market for each hour
    - Allocate resources based on the clearing results
@@ -88,5 +104,6 @@ The system generates:
 - Market clearing prices
 - Resource allocation results
 - Cost calculations
-- Performance metrics 
+- Performance metrics
+
 

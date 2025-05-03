@@ -1,42 +1,42 @@
-%% 现有调频市场出清模型
+%% Frequency regulation market clearing model
 
-%% 参数设定
+%% Parameter Settings
 
-% 时段数量，24小时，逐小时出清，不考虑时段耦合
+% Time parameters: 24 hours with hourly resolution
 TIME = 24; 
-% 资源种类（市场主体）梳理
+% Number of resource types (market participants)
 NOFTYPES = 4;
 
-% 调频容量需求，按照峰荷的 5% 设定，双向
+% Frequency regulation demand, set to 5% of 1000MW (bidirectional)
 R_c_demand = 1000 * 0.05 * ones(TIME, 1);
  
-%% 变量
-%中标容量，四种资源在每个时段
+%% Decision Variables
+% Resource capacity for each type at each time
 R_c = sdpvar(TIME, NOFTYPES, 'full'); 
 
-%% 约束
+%% Constraints
 Constraints = [];
 
-% 满足调频容量总需求(该约束的影子价格为容量出清价格)
-Constraints = [Constraints,R_c_demand==R_c*s_h'];
-% 注：本例中各资源的调频里程成本为0，故没有考虑里程成本。
+% Frequency regulation demand balance constraint
+% (Shadow price of this constraint will be the clearing price)
+Constraints = [Constraints, R_c_demand == R_c * s_h'];
+% Note: If frequency regulation cost is 0, mileage cost is not considered
 
-% 单个资源的最大容量
-Constraints = [Constraints,R_c<=R_max(:, 1:4)];
-Constraints = [Constraints,0<=R_c];
+% Resource capacity constraints
+Constraints = [Constraints, R_c <= R_max(:, 1:4)];  % Upper bound
+Constraints = [Constraints, 0 <= R_c];              % Lower bound (non-negativity)
 
+%% Objective function: Minimize total cost (capacity + mileage)
+% Capacity cost adjusted by performance indicators plus mileage cost
+Z = sum(sum(R_c .* (p_c.p_c ./ s_h))) + sum(R_c * (p_m .* m_h)');
 
-%% cost function, capacity + mileage
-Z = sum(sum(R_c.*(p_c.p_c ./ s_h))) + sum (R_c * (p_m .* m_h)' );
-
-
-%% solve
-ops = sdpsettings('debug',1,'solver','cplex','savesolveroutput',1,'savesolverinput',1);
+%% Solve optimization problem
+ops = sdpsettings('debug', 1, 'solver', 'gurobi', 'savesolveroutput', 1, 'savesolverinput', 1);
 sol = optimize(Constraints, Z, ops);
 
-%% 
-% 记录容量价格和成本
+%% Record results
+% Store cleared capacities
 R_c_clear = value(R_c);
-% 容量价格为等式约束影子价格
-Price_cap = sol.solveroutput.lambda.eqlin;
+% Clearing price is the shadow price of the demand balance constraint
+Price_cap = - sol.solveroutput.result.pi;
 
