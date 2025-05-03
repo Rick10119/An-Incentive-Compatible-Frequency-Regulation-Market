@@ -1,32 +1,32 @@
-
-%% 所提机制
+%% Main script for resource allocation and market clearing
 if ~ exist('Signals')
-    % 策略性报价储能比例
+    % Initialize ratio and read data if Signals don't exist
     ratio = 0;
     read_data;
 end
 if ~ exist('Distribution')
+    % Process raw data if Distribution doesn't exist
     handle_raw_data;
 end
 
-% 投标信息
+% Market information
 
-% 申报成本比例
-
+% Bidding cost calculation
 new_bid;
 
+% Initialize result arrays
 R_c_result = [];
 Price_cap = zeros(24, 1);
 
-
+% Main loop for each hour
 for hour = 1 : 24
     
-    % 出清
+    % Market clearing
     disp("hour: " + hour);
     new_clear;
     
-    if sol.solveroutput.exitflag == 0
-        disp("求解失败，hour = " + hour);
+    if sol.problem ~= 0
+        disp("Clearing failed, hour = " + hour);
         break;
     end
     
@@ -36,33 +36,30 @@ end
 
 R_c_result_new = R_c_result;
 
-
-% 分配
-% 小时序号
+% Resource allocation
+% Convert time to hourly indices
 hour_idx = ceil((1:signal_length)' * 2 / 3600);
 
-% 分配功率
+% Initialize allocation structure
 allocate = struct;
 allocate.rd = zeros(signal_length, NOFTYPES);
 allocate.P_up = [];
 allocate.P_dn = [];
 allocate.lambda = [];
 
-% 总功率调整变量
+% Total power allocation variables
 P_up =  sdpvar(1800, NOFTYPES + 2, 'full');
 P_dn =  sdpvar(1800, NOFTYPES + 2, 'full');
 
-% 逐小时计算
+% Hourly allocation loop
 for hour = 1 : TIME
-    
     new_allocate;
-    
 end
 
-% 统计成本，出力情况
+% Calculate costs and statistics
 calculate_cost;
 
-% 边际价格
+% Market price calculation
 
 
 

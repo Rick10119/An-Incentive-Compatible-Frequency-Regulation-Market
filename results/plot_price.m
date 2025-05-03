@@ -1,30 +1,62 @@
-
+%% é€å°æ—¶çš„æŠ•æ ‡
 close;
-
-%% ËùÌá»úÖÆ
-x = [];
-rate2  = 1.1;
-for rate = 0.9: 0.1 : 1.1
-    r = rate * 4.5 / 5; % ±ß¼Ê³É±¾±ÈÀı
-%     rate2 = rate;
-    r2 = rate2 * 1;
-    
-    
-    new_main;
-    
-    % ÈİÁ¿²¹³¥·ÑÓÃ
-    cap = [R_c_result(:, 1:2) * ones(2, 1), R_c_result(:, 3:5)];
-    allocate.income_cap = ones(1, 24) * (cap .* Price_cap(25:48));
-    
-    % ÔËĞĞ²¹³¥
-    allocate.income_perf = 2/3600 * [allocate.lambda' * (allocate.P_up - allocate.P_dn) * [1, 1, 0, 0, 0, 0, 0]' , ...
-        allocate.lambda' * (allocate.P_up - allocate.P_dn) * [0, 0, 1, 0, 0, 0, 0]', ...
-        allocate.lambda' * (allocate.P_up - allocate.P_dn) * [0, 0, 0, 1, 1, 0, 0]', ...
-        allocate.lambda' * (allocate.P_up - allocate.P_dn) * [0, 0, 0, 0, 0, 1, 1]'];
-    
-    x = [x, allocate.income_cap' + allocate.income_perf'];
-    % x = [x, x * ones(2, 1)];
+diff = 0.1;
+if ~exist('param')
+cd ../data_prepare
+data_prepare;
+cd ../results
 end
- 
-y = reshape(x(4, :), 2, 3);
-y = [y; [-1, 1] * y];
+
+%%
+linewidth = 1.5;
+
+% å®é™…èƒ½é‡
+plot(1:16, param.price_e, "-r", 'linewidth', linewidth);hold on;
+
+y1 = ylabel('Energy Price ($/MWh)','FontSize',13.5,'FontName', 'Times New Roman','FontWeight','bold');
+% ax.YLim = [0, 90];     
+% ç”»ç”µæ± ç”µé‡ï¼ˆå³è½´ï¼‰
+yyaxis right
+
+
+% ax.YLim = [0, 90];     
+plot(1:16, param.price_reg(:, 1), "--g", 'linewidth', linewidth);
+plot(1:16, param.price_reg(:, 2), ":b", 'linewidth', linewidth);
+
+ax = gca;
+ax.YColor = 'black';
+
+legend('Energy','Regulation Capacity','Regulation Mileage','fontsize',13.5, ...
+    'Location','NorthEast', ...
+'Orientation','vertical', ...
+'FontName', 'Times New Roman'); 
+set(gca, "YGrid", "on");
+
+%è®¾ç½®figureå„ä¸ªå‚æ•°
+x1 = xlabel('Hour','FontSize',13.5,'FontName', 'Times New Roman','FontWeight','bold');          %è½´æ ‡é¢˜å¯ä»¥ç”¨texè§£é‡Š
+y1 = ylabel('Regulation Price ($/MW)','FontSize',13.5,'FontName', 'Times New Roman','FontWeight','bold');
+
+
+
+%% å›¾ç‰‡å¤§å°
+figureUnits = 'centimeters';
+figureWidth = 20;
+figureHeight = figureWidth * 2 / 4;
+set(gcf, 'Units', figureUnits, 'Position', [10 10 figureWidth figureHeight]);
+
+%% è½´å±æ€§
+ax = gca;
+ax.XLim = [0, 17];     
+  
+% å­—ä½“ä¸å¤§å°
+ax.FontSize = 13.5;
+
+% è®¾ç½®åˆ»åº¦
+ax.XTick = [1:16];
+
+% è°ƒæ•´æ ‡ç­¾
+ax.XTickLabel =  {'18','19','20','21','22','23','24','1','2','3','4','5','6','7','8','9'};
+ax.FontName = 'Times New Roman';
+set(gcf, 'PaperSize', [19.4, 10]);
+
+saveas(gcf,'price.pdf');
