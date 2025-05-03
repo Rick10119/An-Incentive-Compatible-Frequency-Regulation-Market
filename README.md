@@ -4,6 +4,8 @@ This project implements a market clearing and resource allocation system for fre
 
 Citation: H. Zhou, Q. Shao, X. Zhu, S. Liu, X. Liu and R. Lyu, "An Incentive-Compatible Frequency Regulation Market for Flexible Resources in Microgrid," in IEEE Access, vol. 11, pp. 18983-18994, 2023, doi: 10.1109/ACCESS.2023.3248219.
 
+Video intro: https://www.bilibili.com/video/BV1ezGRztETa
+
 ## Project Structure
 
 The main components of the system are:
