@@ -14,12 +14,12 @@ The main components of the system are:
 - `new_allocate.m`: Handles resource allocation optimization
 - `new_bid.m`: Manages bidding strategies and cost calculations
 - `calculate_cost.m`: Calculates costs for the new mechanism
+- `plot_clear.m`: Visualizes market clearing results
 
 ### Current Mechanism (for comparison)
 - `current_main.m`: Main script for the current market mechanism
 - `current_clear.m`: Market clearing optimization for the current mechanism
 - `current_bid.m`: Bidding strategies for the current mechanism
-- `calculate_cost_current.m`: Cost calculation for the current mechanism
 
 ## Resource Types
 
@@ -82,6 +82,7 @@ The system supports five types of resources:
    - Clear the market for each hour
    - Allocate resources based on the clearing results
    - Calculate costs and prices
+4. Run `plot_clear.m` to visualize the results
 
 ## Dependencies
 
@@ -105,5 +106,6 @@ The system generates:
 - Resource allocation results
 - Cost calculations
 - Performance metrics
+- Publication-quality plots of market clearing results
 
 

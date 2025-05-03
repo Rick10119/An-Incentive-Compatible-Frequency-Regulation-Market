@@ -59,7 +59,8 @@ end
 % Calculate costs and statistics
 calculate_cost;
 
-% Market price calculation
+% Plot clearing results
+plot_clear;
 
 
 
